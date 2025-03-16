@@ -1,14 +1,19 @@
-# This is a sample Python script.
+#This program is to help year 11/10s students in their pythics studies.
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def __init__(self, voltage, supply, current):
+	self.voltage = voltage
+	self.supply = supply
+	self.current = current
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+
+
+
+
+
+
+def intro():
+	print("Hello students, this program will make you answer questions based on the formula \n"
+		  "R = (Vs - Vf) / If")
+
+intro()
