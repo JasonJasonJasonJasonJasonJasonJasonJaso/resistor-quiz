@@ -10,7 +10,16 @@ class quiz:
 		current_amps = self.current / 1000
 
 	def answers(self):
+		user_answer = round(float(input("What is the resistance?")))
+		if user_answer == self.resistance:
+			print("Correct!")
+		else:
+			print("Incorrect!")
 
+	def read_file(self):
+		with open("text.txt", "r") as file:
+			data = file.read().splitlines()
+		return data
 
 
 
@@ -20,5 +29,4 @@ def intro():
 		  "R = (Vs - Vf) / If")
 
 intro()
-quiz.calculate_resistor()
-quiz.answers()
+print("hello worl")
