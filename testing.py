@@ -7,11 +7,9 @@ class Quiz:
         self.supply = supply
         self.led_data = self.read_file()
         self.resistance = 0
-        self.supply_volt_3 ["3", "3v"]
-        self.supply_volt_5 ["5", "5v"]
+
 
     def read_file(self):
-
         with open(r"data.txt", "r") as file:
             data = file.read().splitlines()
         led_values = []
@@ -30,20 +28,22 @@ class Quiz:
 
 
     def ask_question(self, vf, if_current):
-        correct_resistance = self.calculate_resistor(vf, if_current)
-        user_answer = round(float(input(f"Vf = {vf}V, If = {if_current}mA\nWhat is the resistance? ")))
+        try:
+            correct_resistance = self.calculate_resistor(vf, if_current)
+            user_answer = round(float(input(f"Vf = {vf}V, If = {if_current}mA\nWhat is the resistance? ")))
 
-        if user_answer == correct_resistance:
-            print(" Correct!")
-        else:
-            print(f" Incorrect! The correct answer is {correct_resistance}Ω.")
+            if user_answer == correct_resistance:
+                print(" Correct!")
+            else:
+                print(f" Incorrect! The correct answer is {correct_resistance}Ω.")
+        except ValueError:
+            print("Enter numbers instead of gibeerishes, please try again.")
 
     def start_quiz(self):
 
         print("Starting quiz... (Vs is always 5V)")
         for vf, if_current in self.led_data:
             self.ask_question(vf, if_current)
-
 
 # Program Start
 def intro():
@@ -54,7 +54,15 @@ def intro():
 intro()
 
 while True:
-    supply = int(input("Choose the supply voltage: 3 or 5"))
+    supply = input("Choose the supply voltage: 3V or 5V ").strip().upper()
+    if supply in ["3", "3V"]:
+        supply = 3
+        break
+    elif supply in ["5", "5V"]:
+        supply = 5
+        break
+    else:
+        print("Wrong, please read this. Choose between 3 or 5 only.")
 
 quiz = Quiz(supply)
 quiz.start_quiz()
