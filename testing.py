@@ -3,14 +3,19 @@
 
 class Quiz:
     def __init__(self, supply):
+        self.supply = supply
+        if supply == 3:
+            file_name = "led_data_3v.txt"
+        else:
+            file_name = "led_data_5v.txt"
 
         self.supply = supply
-        self.led_data = self.read_file()
+        self.led_data = self.read_file(file_name)
         self.resistance = 0
 
 
-    def read_file(self):
-        with open(r"data.txt", "r") as file:
+    def read_file(self, file_name):
+        with open(file_name, "r") as file:
             data = file.read().splitlines()
         led_values = []
         for i in range(0, len(data), 2):
@@ -41,7 +46,7 @@ class Quiz:
 
     def start_quiz(self):
 
-        print("Starting quiz... (Vs is always 5V)")
+        print(f"Starting quiz... (Vs is always {supply}V)")
         for vf, if_current in self.led_data:
             self.ask_question(vf, if_current)
 
@@ -49,7 +54,7 @@ class Quiz:
 def intro():
     print("Hello students, this program will help you calculate resistance using:\n"
           "R = (Vs - Vf) / If\n")
-    print("Supply voltage (Vs) is fixed at 5V.")
+    print("If answer is more than 2 decimal points, round it to 2 decimal points.")
 
 intro()
 
