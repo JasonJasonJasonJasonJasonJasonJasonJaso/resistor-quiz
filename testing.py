@@ -54,6 +54,9 @@ class Quiz:
         for vf, if_current in self.led_data:
             self.ask_question(vf, if_current)
 
+    def guidelines(self):
+        print("You got this wrong")
+
 # Program Start
 def intro():
     print("Hello students, this program will help you calculate resistance using:\n"
@@ -61,7 +64,7 @@ def intro():
 
     print("If answer is more than 2 decimal points, round it to 2 decimal points.")
 
-def guideline():
+def ask_tutorial():
 
     while True:
         guide = input("Would you like a tutorial? (yes/no) ").strip().lower()
@@ -72,7 +75,7 @@ def guideline():
             print("\nOkay, let's start!")
             break
         else:
-            print("please enter 'yes' or 'no'.")
+            print("Please enter Yes or No ")
 
 def tutorial():
     print("\n--- LED Resistor Calculation Tutorial ---\n")
@@ -105,7 +108,7 @@ def get_supply_voltage():
 
 
 intro()
-guideline()
+ask_tutorial()
 supply = get_supply_voltage()
 quiz = Quiz(supply)
 quiz.start_quiz()
