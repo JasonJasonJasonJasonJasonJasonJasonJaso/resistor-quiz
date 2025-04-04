@@ -26,22 +26,6 @@ class Quiz:
 
         return led_values
 
-    def tutorial(self):
-        print("\n--- LED Resistor Calculation Tutorial ---\n")
-        print("To safely use an LED, we need a resistor to limit the current.")
-        print("Formula: R = (Vs - Vf) / If\n")
-        print("Where:")
-        print("  Vs = Supply Voltage (3V or 5V)")
-        print("  Vf = LED's Forward Voltage (varies by LED)")
-        print("  If = Forward Current in Amps")
-        print("\nExample:")
-        print("  If Vs = 5V, Vf = 2V, If = 20mA, then:")
-        print("We make sure all the values are in the correct unit and size.")
-        print("  If = 20mA but we need If in Amps, we divide it by 1000 to get 0.02A")
-        print("Then we calculate R using the formula:\n")
-        print("  R = (5V - 2V) / 0.02A = 150Ω\n")
-        print("--- End of Tutorial ---\n")
-
     def calculate_resistor(self, vf, if_current):
         if_current_amps = if_current / 1000
         self.resistance = round((self.supply - vf) / if_current_amps, 2)
@@ -77,12 +61,12 @@ def intro():
 
     print("If answer is more than 2 decimal points, round it to 2 decimal points.")
 
-def guideline(quiz):
+def guideline():
 
     while True:
         guide = input("Would you like a tutorial? (yes/no) ").strip().lower()
         if guide == "yes":
-            quiz.tutorial()
+            tutorial()
             break
         elif guide == "no":
             print("\nOkay, let's start!")
@@ -90,22 +74,38 @@ def guideline(quiz):
         else:
             print("please enter 'yes' or 'no'.")
 
+def tutorial():
+    print("\n--- LED Resistor Calculation Tutorial ---\n")
+    print("To safely use an LED, we need a resistor to limit the current.")
+    print("Formula: R = (Vs - Vf) / If\n")
+    print("Where:")
+    print("  Vs = Supply Voltage (3V or 5V)")
+    print("  Vf = LED's Forward Voltage (varies by LED)")
+    print("  If = Forward Current in Amps")
+    print("\nExample:")
+    print("  If Vs = 5V, Vf = 2V, If = 20mA, then:")
+    print("We make sure all the values are in the correct unit and size.")
+    print("  If = 20mA but we need If in Amps, we divide it by 1000 to get 0.02A")
+    print("Then we calculate R using the formula:\n")
+    print("  R = (5V - 2V) / 0.02A = 150Ω\n")
+    print("--- End of Tutorial ---\n")
 
-
-while True:
-    supply = input("Choose the supply voltage: 3V or 5V ").strip().upper()
-    if supply in ["3", "3V"]:
-        supply = 3
-        break
-    elif supply in ["5", "5V"]:
-        supply = 5
-        break
-    else:
+def get_supply_voltage():
+    while True:
+        supply = input("\nChoose the supply voltage: 3V or 5V ").strip().upper()
+        if supply in ["3", "3V"]:
+            return 3
+        elif supply in ["5", "5V"]:
+            return 5
         print("Wrong, please read this. Choose between 3 or 5 only.")
 
+
+
+
+
+
+intro()
+guideline()
+supply = get_supply_voltage()
 quiz = Quiz(supply)
-
-#this is to print the tutorial
-guideline(quiz)
-
 quiz.start_quiz()
