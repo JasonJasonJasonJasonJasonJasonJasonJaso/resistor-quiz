@@ -31,6 +31,23 @@ class Quiz:
         self.resistance = round((self.supply - vf) / if_current_amps, 2)
         return self.resistance
 
+    def guidelines(self, vf, if_current, user_answer, correct_answer):
+        print(f"\nFormula: R = (Vs - Vf) / If")
+        print(f"Your supply voltage (Vs): {self.supply}V")
+        print(f"LED forward voltage (Vf): {vf}V")
+        print(f"LED forward current (If): {if_current}mA")
+
+        if_amps = if_current / 1000
+        print("\nLets apply the formula:")
+        print(f"\nStep 1: Convert If to Amps -> {if_current}mA ÷ 1000 = {if_amps}A")
+
+        voltage_diff = self.supply - vf
+        print(f"Step 2: Subtract voltages -> Vs - Vf = {self.supply} - {vf} = {voltage_diff}V")
+
+        print(f"Step 3: Divide by If -> {voltage_diff} ÷ {if_amps} = {correct_answer}Ω")
+
+        print(f"\nYou answered: {user_answer}Ω")
+        print(f"The correct answer was: {correct_answer}Ω")
 
     def ask_question(self, vf, if_current):
         correct_resistance = self.calculate_resistor(vf, if_current)
@@ -43,6 +60,7 @@ class Quiz:
                     print(" Correct!")
                 else:
                     print(f" Incorrect! The correct answer is {correct_resistance}Ω.")
+                    self.guidelines(vf, if_current, user_answer, correct_resistance, )
                 break
 
             except ValueError:
@@ -50,12 +68,9 @@ class Quiz:
 
     def start_quiz(self):
 
-        print(f"Starting quiz... (Vs is always {supply}V)")
+        print(f"Starting quiz... (Vs is always {self.supply}V)")
         for vf, if_current in self.led_data:
             self.ask_question(vf, if_current)
-
-    def guidelines(self):
-        print("You got this wrong")
 
 # Program Start
 def intro():
@@ -64,12 +79,12 @@ def intro():
 
     print("If answer is more than 2 decimal points, round it to 2 decimal points.")
 
-def ask_tutorial():
+def ask_guideline():
 
     while True:
         guide = input("Would you like a tutorial? (yes/no) ").strip().lower()
         if guide == "yes":
-            tutorial()
+            guideline()
             break
         elif guide == "no":
             print("\nOkay, let's start!")
@@ -77,7 +92,7 @@ def ask_tutorial():
         else:
             print("Please enter Yes or No ")
 
-def tutorial():
+def guideline():
     print("\n--- LED Resistor Calculation Tutorial ---\n")
     print("To safely use an LED, we need a resistor to limit the current.")
     print("Formula: R = (Vs - Vf) / If\n")
@@ -108,7 +123,7 @@ def get_supply_voltage():
 
 
 intro()
-ask_tutorial()
+ask_guideline()
 supply = get_supply_voltage()
 quiz = Quiz(supply)
 quiz.start_quiz()
