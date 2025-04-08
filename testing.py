@@ -1,11 +1,4 @@
 import random
-from termcolor import colored
-from colorama import init
-
-print(colored("Correct!", "green"))
-print(colored("Incorrect!", "red"))
-print(colored("Warning: Invalid input", "yellow"))
-
 
 #Welcome to the led resistor quiz designed for year 10/11's students for their physcis work
 
@@ -86,7 +79,7 @@ class Quiz:
         print(f"Starting quiz... (Vs is always {self.supply}V)")
         for vf, if_current in self.led_data:
             self.ask_question(vf, if_current)
-        print(f"\nQuiz is done! You got {self.score} out of {self.total_questions} correct.")
+        print(f"\nQuiz complete! You got {self.score} out of {self.total_questions} correct.")
 
         if self.score >= self.total_questions / 2:
             print("Nice job! You will definetly pass your test!.")
