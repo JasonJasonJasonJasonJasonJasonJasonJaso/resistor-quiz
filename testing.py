@@ -1,5 +1,4 @@
 import random
-
 #Welcome to the led resistor quiz designed for year 10/11's students for their physcis work
 
 
@@ -17,6 +16,12 @@ class Quiz:
 
         self.score = 0
         self.total_questions = len(self.led_data)
+
+
+        self.red = "\033[91m"
+        self.green = "\033[92m"
+        self.yellow = "\033[93m"
+        self.reset = "\033[0m"
 
 
     def read_file(self, file_name):
@@ -64,10 +69,10 @@ class Quiz:
                 user_answer = round(float(input(f"Vf = {vf}V, If = {if_current}mA\nWhat is the resistance? ")))
 
                 if user_answer == correct_resistance:
-                    print(" Correct!")
+                    print(f"{self.green} + correct! + {self.reset}")
                     self.score += 1
                 else:
-                    print(f" Incorrect! The correct answer is {correct_resistance}Ω.")
+                    print(f"{self.red} +  Incorrect! The correct answer is {correct_resistance}Ω. + {self.reset}")
                     self.guidelines(vf, if_current, user_answer, correct_resistance, )
                 break
 
@@ -79,7 +84,7 @@ class Quiz:
         print(f"Starting quiz... (Vs is always {self.supply}V)")
         for vf, if_current in self.led_data:
             self.ask_question(vf, if_current)
-        print(f"\nQuiz complete! You got {self.score} out of {self.total_questions} correct.")
+        print(f"\nQuiz is done! You got {self.score} out of {self.total_questions} correct.")
 
         if self.score >= self.total_questions / 2:
             print("Nice job! You will definetly pass your test!.")
