@@ -20,7 +20,11 @@ class Quiz:
 
         self.red = "\033[91m"
         self.green = "\033[92m"
-        self.yellow = "\033[93m"
+        self.orange = "\033[33m"
+        self.blue = "\033[94m"
+        self.vs_color = "\033[96m"
+        self.vf_color = "\033[92m"
+        self.if_color = "\033[97m"
         self.reset = "\033[0m"
 
 
@@ -44,22 +48,27 @@ class Quiz:
 
     def guidelines(self, vf, if_current, user_answer, rounded_answer):
         print(f"\nFormula: R = (Vs - Vf) / If")
-        print(f"Your supply voltage (Vs): {self.supply}V")
-        print(f"LED forward voltage (Vf): {vf}V")
-        print(f"LED forward current (If): {if_current}mA")
+        print("\nLet's apply the formula:")
+
+        print(f"Your supply voltage ({self.vs_color}Vs{self.reset}): {self.vs_color}{self.supply}V{self.reset}")
+        print(f"LED forward voltage ({self.vf_color}Vf{self.reset}): {self.vf_color}{vf}V{self.reset}")
+        print(f"LED forward current ({self.if_color}If{self.reset}): {self.if_color}{if_current}mA{self.reset}")
 
         if_amps = if_current / 1000
         voltage_diff = self.supply - vf
 
-        print("\nLets apply the formula:")
-        print(f"Step 1: Convert If to Amps -> {if_current}mA ÷ 1000 = {round(if_amps, 3)}A")
+        print("\nLet's apply the formula:")
 
-        print(f"Step 2: Subtract voltages -> Vs - Vf = {self.supply} - {vf} = {round(voltage_diff, 2)}V")
+        print(f"Step 1: Convert {self.if_color}If{self.reset} to Amps -> "
+              f"{self.if_color}{if_current}mA{self.reset} ÷ 1000 = {self.if_color}{round(if_amps, 3)}A{self.reset}")
 
-        print(f"Step 3: Divide by If -> {round(voltage_diff, 2)} ÷ {round(if_amps, 3)} = {rounded_answer}Ω")
+        print(f"Step 2: Subtract voltages -> {self.vs_color}Vs{self.reset} - {self.vf_color}Vf{self.reset} = "
+              f"{self.vs_color}{self.supply}{self.reset} - {self.vf_color}{vf}{self.reset} = "
+              f"{self.blue}{round(voltage_diff, 2)}V{self.reset}")
 
-        print(f"\nYou answered: {user_answer}Ω")
-        print(f"The correct answer was: {rounded_answer}Ω")
+        print(f"Step 3: Divide by {self.if_color}If{self.reset} -> "
+              f"{self.blue}{round(voltage_diff, 2)}{self.reset} ÷ {self.if_color}{round(if_amps, 3)}{self.reset} ="
+              f" {self.blue}{rounded_answer}Ω{self.reset}")
 
     def ask_question(self, vf, if_current):
         correct_resistance = self.calculate_resistor(vf, if_current)
@@ -77,7 +86,7 @@ class Quiz:
                 break
 
             except ValueError:
-                print("Enter numbers instead of gibeerishes, please try again.")
+                print(f"{self.orange}Enter numbers instead of gibeerishes, please try again.{self.reset}")
 
     def start_quiz(self):
 
@@ -99,12 +108,12 @@ def intro():
 
     print("If answer is more than 2 decimal points, round it to 2 decimal points.")
 
-def ask_guideline():
+def ask_tutorial():
 
     while True:
         guide = input("Would you like a tutorial? (yes/no) ").strip().lower()
         if guide == "yes":
-            guideline()
+            tutorial("\033[96m", "\033[92m", "\033[97m", "\033[0m")
             break
         elif guide == "no":
             print("\nOkay, let's start!")
@@ -112,21 +121,24 @@ def ask_guideline():
         else:
             print("Please enter Yes or No ")
 
-def guideline():
+def tutorial(vs_color, vf_color, if_color, reset):
     print("\n--- LED Resistor Calculation Tutorial ---\n")
     print("To safely use an LED, we need a resistor to limit the current.")
-    print("Formula: R = (Vs - Vf) / If\n")
+    print(f"Formula: R = ({vs_color}Vs{reset} - {vf_color}Vf{reset}) / {if_color}If{reset}\n")
     print("Where:")
-    print("  Vs = Supply Voltage (3V or 5V)")
-    print("  Vf = LED's Forward Voltage (varies by LED)")
-    print("  If = Forward Current in Amps")
+    print(f"  {vs_color}Vs{reset} = Supply Voltage (3V or 5V)")
+    print(f"  {vf_color}Vf{reset} = LED's Forward Voltage (varies by LED)")
+    print(f"  {if_color}If{reset} = Forward Current in Amps")
+
     print("\nExample:")
-    print("  If Vs = 5V, Vf = 2V, If = 20mA, then:")
+    print(f"  If {vs_color}Vs{reset} = 5V, {vf_color}Vf{reset} = 2V, {if_color}If{reset} = 20mA, then:")
     print("We make sure all the values are in the correct unit and size.")
-    print("  If = 20mA but we need If in Amps, we divide it by 1000 to get 0.02A")
-    print("Then we calculate R using the formula:\n")
-    print("  R = (5V - 2V) / 0.02A = 150Ω\n")
+    print(
+        f"  {if_color}If{reset} = 20mA but we need {if_color}If{reset} in Amps, so we divide it by 1000 to get 0.02A")
+    print(f"Then we calculate R using the formula:\n")
+    print(f"  R = ({vs_color}5V{reset} - {vf_color}2V{reset}) / {if_color}0.02A{reset} = 150Ω\n")
     print("--- End of Tutorial ---\n")
+
 
 def get_supply_voltage():
     while True:
@@ -140,7 +152,7 @@ def get_supply_voltage():
 
 
 intro()
-ask_guideline()
+ask_tutorial()
 supply = get_supply_voltage()
 quiz = Quiz(supply)
 quiz.start_quiz()
