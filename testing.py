@@ -1,12 +1,4 @@
 import random
-from termcolor import colored
-from colorama import init
-
-print(colored("Correct!", "green"))
-print(colored("Incorrect!", "red"))
-print(colored("Warning: Invalid input", "yellow"))
-
-
 #Welcome to the led resistor quiz designed for year 10/11's students for their physcis work
 
 
@@ -24,6 +16,16 @@ class Quiz:
 
         self.score = 0
         self.total_questions = len(self.led_data)
+
+
+        self.red = "\033[91m"
+        self.green = "\033[92m"
+        self.yellow = "\033[93m"
+        self.blue = "\033[94m"
+        self.dark_yellow = "\033[33m"  # For Vs
+        self.light_yellow = "\033[93m"  # For Vf
+        self.light_blue = "\033[94m"  # For If
+        self.reset = "\033[0m"
 
 
     def read_file(self, file_name):
@@ -46,22 +48,24 @@ class Quiz:
 
     def guidelines(self, vf, if_current, user_answer, rounded_answer):
         print(f"\nFormula: R = (Vs - Vf) / If")
-        print(f"Your supply voltage (Vs): {self.supply}V")
-        print(f"LED forward voltage (Vf): {vf}V")
-        print(f"LED forward current (If): {if_current}mA")
+        print(f"Your supply voltage ({self.dark_yellow}Vs{self.reset}): {self.dark_yellow}{self.supply}V{self.reset}")
+        print(f"LED forward voltage ({self.light_yellow}Vf{self.reset}): {self.light_yellow}{vf}V{self.reset}")
+        print(f"LED forward current ({self.light_blue}If{self.reset}): {self.blue}{if_current}mA{self.reset}")
 
         if_amps = if_current / 1000
         voltage_diff = self.supply - vf
 
-        print("\nLets apply the formula:")
-        print(f"Step 1: Convert If to Amps -> {if_current}mA ÷ 1000 = {round(if_amps, 3)}A")
+        print("\nLet's apply the formula:")
 
-        print(f"Step 2: Subtract voltages -> Vs - Vf = {self.supply} - {vf} = {round(voltage_diff, 2)}V")
+        print(f"Step 1: Convert {self.light_blue}If{self.reset} to Amps -> "
+              f"{self.light_blue}{if_current}mA{self.reset} ÷ 1000 = {self.light_blue}{round(if_amps, 3)}A{self.reset}")
 
-        print(f"Step 3: Divide by If -> {round(voltage_diff, 2)} ÷ {round(if_amps, 3)} = {rounded_answer}Ω")
+        print(f"Step 2: Subtract voltages -> {self.dark_yellow}Vs{self.reset} - {self.light_yellow}Vf{self.reset} = "
+              f"{self.dark_yellow}{self.supply}{self.reset} - {self.light_yellow}{vf}{self.reset} = "
+              f"{self.blue}{round(voltage_diff, 2)}V{self.reset}")
 
-        print(f"\nYou answered: {user_answer}Ω")
-        print(f"The correct answer was: {rounded_answer}Ω")
+        print(f"Step 3: Divide by {self.light_blue}If{self.reset} -> "
+              f"{self.blue}{round(voltage_diff, 2)} ÷ {round(if_amps, 3)} = {self.blue}{rounded_answer}Ω{self.reset}")
 
     def ask_question(self, vf, if_current):
         correct_resistance = self.calculate_resistor(vf, if_current)
@@ -71,15 +75,15 @@ class Quiz:
                 user_answer = round(float(input(f"Vf = {vf}V, If = {if_current}mA\nWhat is the resistance? ")))
 
                 if user_answer == correct_resistance:
-                    print(" Correct!")
+                    print(f"{self.green} + correct! + {self.reset}")
                     self.score += 1
                 else:
-                    print(f" Incorrect! The correct answer is {correct_resistance}Ω.")
+                    print(f"{self.red} +  Incorrect! The correct answer is {correct_resistance}Ω. + {self.reset}")
                     self.guidelines(vf, if_current, user_answer, correct_resistance, )
                 break
 
             except ValueError:
-                print("Enter numbers instead of gibeerishes, please try again.")
+                print(f"{self.yellow}Enter numbers instead of gibeerishes, please try again.{self.reset}")
 
     def start_quiz(self):
 
